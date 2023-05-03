@@ -2,15 +2,38 @@ const carsRepository = require("../repositories/carsRepository");
 
 module.exports = {
   create(requestBody) {
-    return carsRepository.create(requestBody);
+    const cars = {
+      name: requestBody.body.name,
+      price: requestBody.body.price,
+      size: requestBody.body.size,
+      image: requestBody.body.image,
+      delete: false,
+      created_by: requestBody.user.email
+    }
+
+    return carsRepository.create(cars);
   },
 
   update(id, requestBody) {
-    return carsRepository.update(id, requestBody);
+    const cars = {
+      name: requestBody.body.name,
+      price: requestBody.body.price,
+      size: requestBody.body.size,
+      image: requestBody.body.image,
+      delete: false,
+      updated_by: requestBody.user.email
+    }
+
+    return carsRepository.update(id, cars);
   },
 
-  delete(id) {
-    return carsRepository.delete(id);
+  delete(id, requestBody) {
+    const cars = {
+      delete: true,
+      deleted_by: requestBody.email
+    }
+
+    return carsRepository.update(id, cars);
   },
 
   async list() {

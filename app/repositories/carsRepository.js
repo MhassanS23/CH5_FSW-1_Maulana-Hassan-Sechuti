@@ -26,10 +26,18 @@ module.exports = {
   },
 
   findAll() {
-    return cars_data.findAll();
+    return cars_data.findAll({
+      where: {
+        delete : false
+      }
+    });
   },
 
   getTotalCars() {
-    return cars_data.count();
+    return cars_data.count({
+      where: {
+        delete : false
+      }
+    });
   },
 };

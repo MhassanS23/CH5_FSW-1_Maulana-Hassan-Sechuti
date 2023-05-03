@@ -41,10 +41,13 @@ module.exports = {
     adminService
       .authorize(req.header("authorization"))
       .then((user) => {
-        if(user.data.role !== "Admin"){
+        if(user.data.role === "Superadmin"){
+          req.user = user.data.payload;
+        }else if(user.data.role === "Admin"){
+          req.user = user.data.payload;
+        }else{
           throw new Error();
         }
-        req.user = user.data
         next();
       })
       .catch((err) => {

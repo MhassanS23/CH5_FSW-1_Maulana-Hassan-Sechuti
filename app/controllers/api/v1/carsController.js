@@ -7,7 +7,7 @@ module.exports = {
       .then(({ data, count }) => {
         res.status(200).json({
           status: "Success",
-          data: { posts: data },
+          data: { cars: data },
           meta: { total: count },
         });
       })
@@ -21,10 +21,10 @@ module.exports = {
 
   create(req, res) {
     carsService
-      .create(req.body)
+      .create(req)
       .then((cars) => {
         res.status(201).json({
-          status: "Success",
+          status: "Success, Data Car Created!",
           data: cars,
         });
       })
@@ -38,10 +38,10 @@ module.exports = {
 
   update(req, res) {
     carsService
-      .update(req.params.id, req.body)
+      .update(req.params.id, req)
       .then(() => {
         res.status(200).json({
-          status: "Success",
+          status: "Success, Data Car Updated!",
         });
       })
       .catch((err) => {
@@ -71,9 +71,11 @@ module.exports = {
 
   destroy(req, res) {
     carsService
-      .delete(req.params.id)
+      .delete(req.params.id, req.user)
       .then(() => {
-        res.status(204).end();
+        res.status(200).json({
+          status: "Success, Data Car Deleted!",
+        });
       })
       .catch((err) => {
         res.status(422).json({

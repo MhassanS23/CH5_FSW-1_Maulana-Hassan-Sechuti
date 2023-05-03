@@ -21,6 +21,18 @@ module.exports = {
       image: {
         type: Sequelize.STRING
       },
+      delete: {
+        type: Sequelize.BOOLEAN
+      },
+      created_by: {
+        type: Sequelize.STRING
+      },
+      updated_by: {
+        type: Sequelize.STRING
+      },
+      deleted_by: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
