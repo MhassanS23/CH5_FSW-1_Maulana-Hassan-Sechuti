@@ -24,14 +24,59 @@ module.exports = {
       delete: {
         type: Sequelize.BOOLEAN
       },
-      created_by: {
-        type: Sequelize.STRING
+      created_by_admin: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Admins"
+          },
+          key: 'id'
+        }
       },
-      updated_by: {
-        type: Sequelize.STRING
+      created_by_superadmin: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Superadmins"
+          },
+          key: 'id'
+        }
       },
-      deleted_by: {
-        type: Sequelize.STRING
+      updated_by_admin: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Admins"
+          },
+          key: 'id'
+        }
+      },
+      updated_by_superadmin: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Superadmins"
+          },
+          key: 'id'
+        }
+      },
+      deleted_by_admin: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Admins"
+          },
+          key: 'id'
+        }
+      },
+      deleted_by_superadmin: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Superadmins"
+          },
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,

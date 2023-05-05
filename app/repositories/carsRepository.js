@@ -1,4 +1,6 @@
 const { cars_data } = require("../models");
+const { Admin } = require("../models");
+const { Superadmin } = require("../models");
 
 module.exports = {
   create(createArgs) {
@@ -39,5 +41,17 @@ module.exports = {
         delete : false
       }
     });
+  },
+
+  findEmailSuperadmin(email){
+    return Superadmin.findOne({
+      where : {email}
+    })
+  },
+
+  findEmailAdmin(email){
+    return Admin.findOne({
+      where : {email}
+    })
   },
 };

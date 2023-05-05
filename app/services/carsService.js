@@ -1,39 +1,110 @@
+const admin = require("../models/admin");
 const carsRepository = require("../repositories/carsRepository");
+const {cloudinary} = require("../../utils/cloudinary");
 
 module.exports = {
-  create(requestBody) {
-    const cars = {
-      name: requestBody.body.name,
-      price: requestBody.body.price,
-      size: requestBody.body.size,
-      image: requestBody.body.image,
-      delete: false,
-      created_by: requestBody.user.email
+  async create(requestBody) {
+    const id = requestBody.user.id;
+    const result = await cloudinary.uploader.upload(requestBody.file.path);
+    const name = requestBody.body.name;
+    const price = requestBody.body.price;
+    const size = requestBody.body.size;
+    const image = requestBody.body.image;
+    const x = false;
+
+    const adminUser = await carsRepository.findEmailAdmin(requestBody.user.email);
+    const superadminUser = await carsRepository.findEmailSuperadmin(requestBody.user.email);
+
+    console.log(result);
+    if(adminUser){
+      return carsRepository.create({
+        name,
+        price,
+        size,
+        image: result.url,
+        delete: x,
+        created_by_admin: id
+      });
     }
 
-    return carsRepository.create(cars);
+    if(superadminUser){
+      return carsRepository.create({
+        name,
+        price,
+        size,
+        image: result.url,
+        delete: x,
+        created_by_superadmin: id
+      });
+    }
+
   },
 
-  update(id, requestBody) {
-    const cars = {
-      name: requestBody.body.name,
-      price: requestBody.body.price,
-      size: requestBody.body.size,
-      image: requestBody.body.image,
-      delete: false,
-      updated_by: requestBody.user.email
+  async update(id, requestBody) {
+    const idUser = requestBody.user.id;
+    const name = requestBody.body.name;
+    const price = requestBody.body.price;
+    const size = requestBody.body.size;
+    const x = false;
+
+
+    let new_img = '';
+
+    if(requestBody.file == undefined){
+        const findCars = await carsRepository.find(id);
+        new_img = findCars.image;
+    }else{
+        const upload_img=  await cloudinary.uploader.upload(requestBody.file.path);
+         new_img = upload_img.url;
     }
 
-    return carsRepository.update(id, cars);
+    const adminUser = await carsRepository.findEmailAdmin(requestBody.user.email);
+    const superadminUser = await carsRepository.findEmailSuperadmin(requestBody.user.email);
+
+    if(adminUser){
+      return carsRepository.update(id, {
+        name,
+        price,
+        size,
+        image: new_img,
+        delete: x,
+        updated_by_admin: idUser
+      });
+    }
+    
+    if(superadminUser){
+      return carsRepository.update(id, {
+        name,
+        price,
+        size,
+        image: new_img,
+        delete: x,
+        updated_by_superadmin: idUser
+      });
+    }
   },
 
-  delete(id, requestBody) {
-    const cars = {
-      delete: true,
-      deleted_by: requestBody.email
+  async delete(id, requestBody) {
+    const x = true;
+    const idUser = requestBody.id;
+
+    const adminUser = await carsRepository.findEmailAdmin(requestBody.email);
+    const superadminUser = await carsRepository.findEmailSuperadmin(requestBody.email);
+
+    if(adminUser){
+      return carsRepository.update(id, {
+        delete: x,
+        deleted_by_admin: idUser
+      });
+    }
+    
+    if(superadminUser){
+      return carsRepository.update(id, {
+        delete: x,
+        deleted_by_superadmin: idUser
+      });
     }
 
-    return carsRepository.update(id, cars);
   },
 
   async list() {

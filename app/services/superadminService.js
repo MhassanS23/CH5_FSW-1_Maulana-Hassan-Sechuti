@@ -3,6 +3,14 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const secretKey = "secret"
 
+const encryptPassword = async (password) => {
+  try {
+    const encryptedPassword = await bcrypt.hash(password, 10);
+    return encryptedPassword;
+  } catch (error) {
+    return error;
+  }
+}
 
 const checkPassword = async (password, encryptedPassword) =>{
   try {
@@ -36,6 +44,15 @@ const verifyToken = async (payload) =>{
 
 
 module.exports = {
+  async create(requestBody) {
+    const name = requestBody.name;
+    const email = requestBody.email;
+    const password = await encryptPassword(requestBody.password);
+
+
+    return superadminRepository.create({ name, email, password });
+
+  },
 
   async login(requestBody) {
     const email = requestBody.email;

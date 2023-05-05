@@ -10,7 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      this.hasMany(models.cars_data, {
+        foreignKey: 'created_by_admin',
+        as: 'Admins_create'
+      })
+      this.hasMany(models.cars_data, {
+        foreignKey: 'updated_by_admin',
+        as: 'Admins_update'
+      })
+      this.hasMany(models.cars_data, {
+        foreignKey: 'deleted_by_admin',
+        as: 'Admins_delete'
+      })
     }
   }
   Admin.init({

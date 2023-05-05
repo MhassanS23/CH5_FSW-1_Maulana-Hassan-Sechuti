@@ -33,7 +33,7 @@ module.exports = {
       .then((user) => {
 
         if(!user.data){
-          res.status(401).json({
+          res.status(403).json({
             status:"Failed",
             message: user.message,
             data: null

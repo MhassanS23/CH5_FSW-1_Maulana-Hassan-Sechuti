@@ -29,4 +29,21 @@ module.exports = {
       });
   },
 
+  register(req, res) {
+    superadminService
+      .create(req.body)
+      .then((user) => {
+        
+        res.status(201).json({
+          data: user
+        });
+      })
+      .catch((err) => {
+        res.status(422).json({
+          status: "Failed",
+          message: err.message,
+        });
+      });
+  },
+
 };
