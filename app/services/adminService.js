@@ -104,7 +104,6 @@ module.exports = {
           name: user.name,
           email: user.email,
           jwtToken,
-          password: user.password,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         },

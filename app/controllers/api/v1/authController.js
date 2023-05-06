@@ -8,11 +8,14 @@ module.exports = {
     userService
       .authorize(req.header("authorization"))
       .then((user) => {
+        if(!user.data){
+          throw new Error();
+        }
         req.user = user.data;
+        req.role = user.role;
         next();
       })
       .catch((err) => {
-        console.log(err);
         res.status(401).json({
           message: "Unauthorized",
         })
@@ -60,7 +63,8 @@ module.exports = {
 
   whoAmI(req, res){
     const user = req.user;
-    res.status(200).json(user);
+    const role = req.role;
+    res.status(200).json({user, role});
   }
 
 };

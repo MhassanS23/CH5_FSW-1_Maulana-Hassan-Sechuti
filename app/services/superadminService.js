@@ -44,15 +44,6 @@ const verifyToken = async (payload) =>{
 
 
 module.exports = {
-  async create(requestBody) {
-    const name = requestBody.name;
-    const email = requestBody.email;
-    const password = await encryptPassword(requestBody.password);
-
-
-    return superadminRepository.create({ name, email, password });
-
-  },
 
   async login(requestBody) {
     const email = requestBody.email;
@@ -80,7 +71,7 @@ module.exports = {
 
     const jwtToken = await createToken(user)
 
-    if(isPasswordCorrect){
+    if(isPasswordCorrect && user){
       return{
         data: { 
           id: user.id,
@@ -88,7 +79,6 @@ module.exports = {
           name: user.name,
           email: user.email,
           jwtToken,
-          password: user.password,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         },

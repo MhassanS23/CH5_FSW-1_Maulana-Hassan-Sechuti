@@ -35,7 +35,6 @@ apiRouter.delete(
 //USER AUTHENTICATION
 apiRouter.get("/api/v1/whoami", controllers.api.v1.authController.authorize, controllers.api.v1.authController.whoAmI);
 apiRouter.post("/api/v1/users/register", controllers.api.v1.userController.register);
-apiRouter.post("/api/v1/superadmin/register", controllers.api.v1.superadminController.register);
 apiRouter.post("/api/v1/users/login", controllers.api.v1.userController.login);
 
 //SUPERADMIN 

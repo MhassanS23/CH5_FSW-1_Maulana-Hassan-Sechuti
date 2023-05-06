@@ -8,7 +8,7 @@ module.exports = {
       .then((user) => {
         
         if(!user.data){
-          res.status(401).json({
+          res.status(403).json({
             status:"Failed",
             message: user.message,
             data: null
@@ -19,23 +19,6 @@ module.exports = {
         res.status(201).json({
           status: "Success",
           data: {user: user.data},
-        });
-      })
-      .catch((err) => {
-        res.status(422).json({
-          status: "Failed",
-          message: err.message,
-        });
-      });
-  },
-
-  register(req, res) {
-    superadminService
-      .create(req.body)
-      .then((user) => {
-        
-        res.status(201).json({
-          data: user
         });
       })
       .catch((err) => {

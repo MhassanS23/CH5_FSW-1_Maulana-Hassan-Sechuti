@@ -1,4 +1,6 @@
 const userRepository = require("../repositories/userRepository");
+const adminRepository = require("../repositories/adminRepository");
+const superadminRepository = require("../repositories/superadminRepository");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const secretKey = "secret"
@@ -23,7 +25,7 @@ const checkPassword = async (password, encryptedPassword) =>{
 
 const createToken = async (payload) => {
   try {
-    const token = await jwt.sign({payload}, secretKey);
+    const token = await jwt.sign({payload, role: "user"}, secretKey);
     return token;
   } catch (error) {
     return error;
@@ -100,7 +102,6 @@ module.exports = {
           name: user.name,
           email: user.email,
           jwtToken,
-          encryptedPassword: user.encryptedPassword,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         },
@@ -141,9 +142,9 @@ module.exports = {
 
     const tokenPayload = await verifyToken(token);
 
-    userData = await userRepository.find(tokenPayload.payload.id);
     return{
-      data: userData
+      data: tokenPayload.payload,
+      role: tokenPayload.role
     };
   },
 

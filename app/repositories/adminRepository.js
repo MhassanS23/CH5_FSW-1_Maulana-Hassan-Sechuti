@@ -10,4 +10,8 @@ module.exports = {
       where : {email}
     })
   },
+
+  find(id) {
+    return Admin.findByPk(id);
+  },
 };
